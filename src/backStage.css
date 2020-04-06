@@ -1,0 +1,22 @@
+.trigger {
+  display: inline-block;
+  font-size: 18px;
+  cursor: pointer;
+  transition: color 0.3s;
+  margin-left: 10px;
+  vertical-align: middle;
+}
+
+.trigger:hover {
+  color: #1890ff;
+}
+
+.site-layout .site-layout-background {
+  background: #fff;
+}
+.layoutHeader {
+  padding: 0;
+  height: 40px;
+  margin: 10px;
+  line-height: 40px;
+}

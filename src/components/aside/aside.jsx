@@ -1,42 +1,75 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { Layout } from "antd";
 import { Menu, Switch } from "antd";
 import { AppstoreOutlined, SettingOutlined } from "@ant-design/icons";
 import "./aside.scss";
 import "antd/dist/antd.css";
 
 const { SubMenu } = Menu;
-const { Header } = Layout;
+const siderData = [
+  {
+    title: "运营中心",
+    key: "operation",
+    to: "",
+  },
+  {
+    title: "商品管理",
+    key: "goods",
+    to: "",
+  },
+  {
+    title: "订单管理",
+    key: "orders",
+    to: "",
+  },
+  {
+    title: "图片管理",
+    key: "pictures",
+    to: "",
+  },
+  {
+    title: "消息中心",
+    key: "messages",
+    to: "",
+  },
+  {
+    title: "权限中心",
+    key: "authority",
+    to: "",
+  },
+  {
+    title: "客服管理",
+    key: "services",
+    to: "",
+  },
+  {
+    title: "小程序",
+    key: "applet",
+    to: "",
+  },
+];
 
 class Aside extends Component {
   state = {
     theme: "dark",
-    current: "1"
+    current: "1",
   };
 
-  changeTheme = value => {
+  changeTheme = (value) => {
     this.setState({
-      theme: value ? "dark" : "light"
+      theme: value ? "dark" : "light",
     });
   };
 
-  handleClick = e => {
-    console.log("click ", e);
+  handleClick = (e) => {
     this.setState({
-      current: e.key
+      current: e.key,
     });
   };
 
   render() {
     return (
       <div className="siderBar">
-        <Header
-          className="site-layout-background"
-          style={{ padding: 10, backgroundColor: "white" }}
-        >
-          用户管理中心
-        </Header>
         <Menu
           theme={this.state.theme}
           onClick={this.handleClick}
@@ -44,18 +77,21 @@ class Aside extends Component {
           selectedKeys={[this.state.current]}
           mode="inline"
         >
+          <div className="logo">
+            <span>管理中心</span>
+          </div>
           <Menu.Item key="users">
-            <Link to="/users">Users</Link>
+            <Link to="/admin/users">用户列表</Link>
           </Menu.Item>
           <Menu.Item key="another">
-            <Link to="/another">Another</Link>
+            <Link to="/admin/authorities">权限管理</Link>
           </Menu.Item>
           <SubMenu
             key="sub2"
             title={
               <span>
                 <AppstoreOutlined />
-                <span>Navigation Two</span>
+                <span>微信账户</span>
               </span>
             }
           >
@@ -71,7 +107,7 @@ class Aside extends Component {
             title={
               <span>
                 <SettingOutlined />
-                <span>Navigation Three</span>
+                <span>支付宝账户</span>
               </span>
             }
           >
@@ -80,9 +116,12 @@ class Aside extends Component {
             <Menu.Item key="11">Option 11</Menu.Item>
             <Menu.Item key="12">Option 12</Menu.Item>
           </SubMenu>
+          {siderData.map((c) => (
+            <Menu.Item key={c.key}>
+              <Link to={c.to}>{c.title}</Link>
+            </Menu.Item>
+          ))}
         </Menu>
-        <br />
-        <br />
         <Switch
           checked={this.state.theme === "dark"}
           onChange={this.changeTheme}

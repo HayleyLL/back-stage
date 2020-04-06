@@ -1,63 +1,43 @@
-import React, { Component } from "react";
-import { Layout, Menu } from "antd";
-import Aside from "./components/aside/aside";
-import Main from "./components/main/main";
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined
-} from "@ant-design/icons";
-import "antd/dist/antd.css";
-import "./App.css";
+import React from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
+import BackStage from "./backStage";
+import LoginForm from "./components/login/loginForm";
+import NotFound from "./components/common/notFound";
 
-const { Sider, Header, Content } = Layout;
-class App extends Component {
-  state = {
-    collapsed: false
-  };
-  toggle = () => {
-    this.setState({
-      collapsed: !this.state.collapsed
-    });
-  };
-  render() {
+const App = (props) => {
+  //根据是否有token渲染页面
+  function PrivateRoute({ children, ...rest }) {
+    const token = localStorage.getItem("token");
     return (
-      <Layout>
-        <Sider
-          trigger={null}
-          collapsible
-          collapsed={this.state.collapsed}
-          theme="light"
-        >
-          <Aside />
-        </Sider>
-
-        <Layout className="site-layout">
-          <Header className="site-layout-background" style={{ padding: 10 }}>
-            {React.createElement(
-              this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined,
-              {
-                className: "trigger",
-                onClick: this.toggle
-              }
-            )}
-          </Header>
-          <Content
-            className="site-layout-background"
-            style={{
-              margin: "24px 16px",
-              padding: 24,
-              minHeight: 280
-            }}
-          >
-            <Main />
-          </Content>
-        </Layout>
-      </Layout>
+      <Route
+        {...rest}
+        render={({ location }) =>
+          token ? (
+            children
+          ) : (
+            <Redirect
+              to={{
+                pathname: "/admin/login",
+                state: { from: location },
+              }}
+            />
+          )
+        }
+      />
     );
   }
-}
+
+  return (
+    <Switch>
+      <Route path="/admin/login" component={LoginForm} />
+      <PrivateRoute path="/admin">
+        <BackStage />
+      </PrivateRoute>
+      <Redirect from="/" to="/admin/login" />
+      <Route path="/not-found" component={NotFound} />
+      <Redirect to="/not-found" />
+    </Switch>
+  );
+};
 
 export default App;
