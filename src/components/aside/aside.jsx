@@ -83,24 +83,20 @@ class Aside extends Component {
           <Menu.Item key="users">
             <Link to="/admin/users">用户列表</Link>
           </Menu.Item>
-          <Menu.Item key="another">
-            <Link to="/admin/authorities">权限管理</Link>
-          </Menu.Item>
           <SubMenu
-            key="sub2"
+            key="authorities"
             title={
               <span>
-                <AppstoreOutlined />
-                <span>微信账户</span>
+                <span>权限管理</span>
               </span>
             }
           >
-            <Menu.Item key="5">Option 5</Menu.Item>
-            <Menu.Item key="6">Option 6</Menu.Item>
-            <SubMenu key="sub3" title="Submenu">
-              <Menu.Item key="7">Option 7</Menu.Item>
-              <Menu.Item key="8">Option 8</Menu.Item>
-            </SubMenu>
+            <Menu.Item key="usersAuth">
+              <Link to="/admin/authorities">用户权限管理</Link>
+            </Menu.Item>
+            <Menu.Item key="systemAuth">
+              <Link to="/admin/systemAuthorities">系统权限管理</Link>
+            </Menu.Item>
           </SubMenu>
           <SubMenu
             key="sub4"

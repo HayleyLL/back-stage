@@ -1,7 +1,7 @@
 import React from "react";
 import { PageHeader, Breadcrumb } from "antd";
 
-const Header = ({ href, previousItem, currentItem }) => {
+const Header = ({ href, previousItem, currentItem, children }) => {
   return (
     <PageHeader
       className="site-page-header mainHeader"
@@ -14,6 +14,7 @@ const Header = ({ href, previousItem, currentItem }) => {
         <Breadcrumb.Item>{currentItem}</Breadcrumb.Item>
       </Breadcrumb>
       <h1 style={{ marginTop: 8, fontWeight: "bold" }}>{currentItem}</h1>
+      {children}
     </PageHeader>
   );
 };

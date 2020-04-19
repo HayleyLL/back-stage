@@ -107,9 +107,46 @@ const MainHeader = (props) => {
           path="/admin/authorities"
           render={(props) => (
             <Header
-              href="/admin"
-              previousItem="首页"
-              currentItem="权限管理"
+              href="/admin/users"
+              previousItem="用户列表"
+              currentItem="用户权限管理"
+              {...props}
+            />
+          )}
+        />
+        <Route
+          exact
+          path="/admin/systemAuthorities/tree"
+          render={(props) => (
+            <Header
+              href="/admin/systemAuthorities"
+              previousItem="权限管理"
+              currentItem="树状图"
+              {...props}
+            />
+          )}
+        />
+
+        <Route
+          exact
+          path="/admin/systemAuthorities"
+          render={(props) => (
+            <Header
+              href="/admin/authorities"
+              previousItem="用户权限管理"
+              currentItem="系统权限管理"
+              {...props}
+            />
+          )}
+        />
+        <Route
+          exact
+          path="/admin/authorities/:id"
+          render={(props) => (
+            <Header
+              href="/admin/authorities"
+              previousItem="权限管理"
+              currentItem="更新用户权限"
               {...props}
             />
           )}

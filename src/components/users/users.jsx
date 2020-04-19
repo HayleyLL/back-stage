@@ -1,10 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
-import moment from "moment-timezone";
-import MainTable from "../common/table/table";
+import UsersTable from "../common/table/usersTable";
 import Search from "../common/search/search";
-import axios from "axios";
-import { usersUrl } from "../../httpRequest";
 
 const columns = [
   {
@@ -34,7 +31,7 @@ const columns = [
   },
   {
     title: "操作",
-    key: "action",
+    key: "actions",
     render: (text, record) => (
       <span>
         <Link
@@ -49,82 +46,20 @@ const columns = [
   },
 ];
 
-class UsersPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      users: [],
-      pagination: {
-        pageSize: 5,
-        pageNum: 1,
-        total: 0,
-      },
-    };
-    this.handlePageChange = this.handlePageChange.bind(this);
-  }
-
-  //请求users
-  requestUsers() {
-    const { pageNum, pageSize } = this.state.pagination;
-    const self = this;
-    axios({
-      method: "get",
-      url: usersUrl,
-      params: { pageNum, pageSize },
-      headers: { Authorization: localStorage.getItem("token") },
-    })
-      .then(function (response) {
-        const data = response.data.list;
-        const total = response.data.total;
-        const users = data.map((user) => {
-          user.key = user.id;
-          user.createdAt = moment(user.createdAt).format("YYYY-MM-DD hh:mm:ss");
-          user.updatedAt = moment(user.updatedAt).format("YYYY-MM-DD hh:mm:ss");
-          return user;
-        });
-        const state = { ...self.state };
-        state.users = users;
-        state.pagination.total = total;
-        self.setState(state);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
-
-  componentDidMount() {
-    this.requestUsers();
-  }
-
-  componentDidUpdate(prevProps) {
-    const { prevLocation } = prevProps.location;
-    const { location } = this.props.location;
-    if (prevLocation !== location) this.requestUsers();
-  }
-
-  handlePageChange(page, pageSize) {
-    const state = { ...this.state };
-    state.pagination.pageNum = page;
-    this.setState(state);
-    this.requestUsers();
-  }
-
-  render() {
-    const { pageSize, total } = this.state.pagination;
-    const pagination = { pageSize, total, onChange: this.handlePageChange };
-
-    return (
-      <div className="usersPart">
-        <Search />
-        <MainTable
-          columns={columns}
-          data={this.state.users}
-          pagination={pagination}
-          handleCellClick={this.handleCellClick}
-        />
-      </div>
-    );
-  }
-}
+const UsersPage = (props) => {
+  const { requestUsers } = props;
+  const pageSize = 5;
+  return (
+    <div className="usersPart">
+      <Search />
+      <UsersTable
+        columns={columns}
+        requestUsers={requestUsers}
+        pageSize={pageSize}
+      />
+      ;
+    </div>
+  );
+};
 
 export default UsersPage;

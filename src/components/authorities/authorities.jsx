@@ -1,35 +1,65 @@
-import React, { Component } from "react";
-import { Table } from "antd";
+import React from "react";
+import { Link } from "react-router-dom";
+import UsersTable from "../common/table/usersTable";
 
 const columns = [
   {
     title: "姓名",
     dataIndex: "name",
     key: "name",
+    width: 250,
   },
   {
-    title: "id",
+    title: "Id",
     dataIndex: "id",
     key: "id",
+    width: 250,
   },
   {
-    title: "权限",
-    dataIndex: "authority",
-    key: "authority",
+    title: "操作",
+    dataIndex: "actions",
+    key: "actions",
+    render: (text, record) => (
+      <span style={{ verticalAlign: "middle" }}>
+        <a
+          style={{
+            paddingRight: 8,
+            marginRight: 8,
+            borderRight: "solid 1px #7a7876",
+          }}
+        >
+          <span
+            style={{
+              fontSize: 14,
+              lineHeight: "14px",
+              verticalAlign: "top",
+            }}
+          >
+            查看权限
+          </span>
+        </a>
+        <Link to={"/admin/authorities/" + record.id}>
+          <span
+            style={{ fontSize: 14, lineHeight: "14px", verticalAlign: "top" }}
+          >
+            修改权限
+          </span>
+        </Link>
+      </span>
+    ),
   },
 ];
 
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    id: "1",
-  },
-];
-class Authorities extends Component {
-  render() {
-    return <Table columns={columns} dataSource={data} />;
-  }
-}
+const Authorities = (props) => {
+  const { requestUsers } = props;
+  const pageSize = 6;
+  return (
+    <UsersTable
+      columns={columns}
+      requestUsers={requestUsers}
+      pageSize={pageSize}
+    />
+  );
+};
 
 export default Authorities;
