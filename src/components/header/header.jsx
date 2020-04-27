@@ -26,16 +26,20 @@ const MainHeader = (props) => {
   //登出清理token并回到登录页面
   const logout = (e) => {
     e.preventDefault();
-    console.log(555);
     axios({
       method: "post",
       url: signOutUrl,
       headers: { Authorization: localStorage.getItem("token") },
-    }).then(function () {
-      localStorage.removeItem("token");
-      console.log(444);
-      history.push("/");
-    });
+    })
+      .then(function () {
+        localStorage.removeItem("token");
+        history.push("/");
+      })
+      .catch(function (error) {
+        if (error.response.status === 401) {
+          localStorage.removeItem("token");
+        }
+      });
   };
 
   const { state, toggle } = props;

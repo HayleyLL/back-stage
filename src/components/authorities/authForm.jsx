@@ -47,7 +47,6 @@ class AuthForm extends Component {
   render() {
     const { visible, confirmLoading, input } = this.state;
     const { title, children } = this.props;
-    console.log(children);
     return (
       <Fragment>
         {cloneElement(children, { onClick: this.showModal })}

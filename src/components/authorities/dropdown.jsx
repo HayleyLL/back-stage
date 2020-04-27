@@ -49,31 +49,43 @@ const data = [
   },
 ];
 
-//根据数据渲染菜单
-const mapToMenu = (data) => {
-  let menuItems = [];
-  data.map((item) => {
-    if (!item.children)
-      menuItems.push(<Menu.Item key={item.id}>{item.code}</Menu.Item>);
-    else
-      menuItems.push(
-        <SubMenu title={item.code} key={item.id}>
-          {mapToMenu(item.children)}
-        </SubMenu>
-      );
-  });
-  return menuItems;
-};
-
-const menu = <Menu>{mapToMenu(data)}</Menu>;
-
 class DropDown extends Component {
   constructor(props) {
     super(props);
+    this.state = { data };
   }
 
+  //根据数据渲染菜单
+  mapToMenu = (data) => {
+    const { handleClick } = this.props;
+    const copyData = this.state.data;
+    let menuItems = [];
+    data.map((item) => {
+      if (!item.children) {
+        menuItems.push(<Menu.Item key={item.id}>{item.code}</Menu.Item>);
+      } else
+        menuItems.push(
+          <SubMenu
+            title={item.code}
+            key={item.id}
+            onTitleClick={(e) => handleClick(e, copyData)}
+          >
+            {this.mapToMenu(item.children)}
+          </SubMenu>
+        );
+    });
+    return menuItems;
+  };
+
   render() {
-    const { children } = this.props;
+    const { children, handleClick } = this.props;
+    const copyData = this.state.data;
+    const menu = (
+      <Menu onClick={(e) => handleClick(e, copyData)}>
+        {this.mapToMenu(data)}
+      </Menu>
+    );
+
     return (
       <Dropdown overlay={menu} placement="bottomRight">
         <div style={{ marginBottom: 15 }}>{children}</div>
