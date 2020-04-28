@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Tree } from "antd";
 import { v4 } from "uuid";
 import PopOver from "./popover";
+import { systemConfigsUrl } from "../../httpRequest";
+import { getPromise } from "./api";
 
 class ShowAuthTree extends Component {
   constructor(props) {
@@ -9,97 +11,17 @@ class ShowAuthTree extends Component {
     this.state = {
       gData: [
         {
-          title: "parent 1",
-          key: "0-0",
+          title: "root",
+          key: "root",
           icon: (
             <PopOver
               handleAddClick={this.handleAddClick}
               handleReplaceClick={this.handleReplaceClick}
               handleMouseEnter={this.handleMouseEnter}
               handleDeleteClick={this.handleDeleteClick}
-              id="0-0"
+              id="root"
             />
           ),
-          children: [
-            {
-              title: "parent 1-0",
-              key: "0-0-0",
-              icon: (
-                <PopOver
-                  handleAddClick={this.handleAddClick}
-                  handleReplaceClick={this.handleReplaceClick}
-                  handleMouseEnter={this.handleMouseEnter}
-                  handleDeleteClick={this.handleDeleteClick}
-                  id="0-0-0"
-                />
-              ),
-              children: [
-                {
-                  title: "leaf",
-                  key: "0-0-0-0",
-                  icon: (
-                    <PopOver
-                      handleAddClick={this.handleAddClick}
-                      handleReplaceClick={this.handleReplaceClick}
-                      handleMouseEnter={this.handleMouseEnter}
-                      handleDeleteClick={this.handleDeleteClick}
-                      id="0-0-0-0"
-                    />
-                  ),
-                  disableCheckbox: true,
-                },
-                {
-                  title: "leaf",
-                  key: "0-0-0-1",
-                  icon: (
-                    <PopOver
-                      handleAddClick={this.handleAddClick}
-                      handleReplaceClick={this.handleReplaceClick}
-                      handleMouseEnter={this.handleMouseEnter}
-                      handleDeleteClick={this.handleDeleteClick}
-                      id="0-0-0-1"
-                    />
-                  ),
-                },
-              ],
-            },
-            {
-              title: "parent 1-1",
-              key: "0-0-1",
-              icon: (
-                <PopOver
-                  handleAddClick={this.handleAddClick}
-                  handleReplaceClick={this.handleReplaceClick}
-                  handleMouseEnter={this.handleMouseEnter}
-                  handleDeleteClick={this.handleDeleteClick}
-                  id="0-0-1"
-                />
-              ),
-              children: [
-                {
-                  title: (
-                    <span
-                      style={{
-                        color: "#1890ff",
-                      }}
-                    >
-                      sss
-                    </span>
-                  ),
-                  key: "0-0-1-0",
-                  icon: (
-                    <PopOver
-                      handleAddClick={this.handleAddClick}
-                      handleReplaceClick={this.handleReplaceClick}
-                      handleMouseEnter={this.handleMouseEnter}
-                      handleDeleteClick={this.handleDeleteClick}
-                      id="0-0-1-0"
-                    />
-                  ),
-                },
-              ],
-            },
-          ],
         },
       ],
       expandedKeys: ["0-0", "0-0-0", "0-0-0-0"],
@@ -110,7 +32,8 @@ class ShowAuthTree extends Component {
   //获取menu中点击的节点
   mapToGetNode = (e, data) => {
     for (let item of data) {
-      if (item.id === e.key) {
+      if (item.id == e.key) {
+        //这里id为num, key为字符串？
         return { ...item };
       } else if (item.children) {
         let current = this.mapToGetNode(e, item.children);
@@ -278,7 +201,6 @@ class ShowAuthTree extends Component {
       return parents;
     };
     let newgData = loop(data);
-    console.log(newgData);
     this.setState({ gData: [...newgData] });
   };
 
@@ -352,6 +274,18 @@ class ShowAuthTree extends Component {
       gData: data,
     });
   };
+
+  componentDidMount() {
+    let self = this;
+    getPromise(systemConfigsUrl, 1, 1000)
+      .then(function (response) {
+        const { list } = response.data;
+        if (list.length > 0) self.setState({ gData: list });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
 
   render() {
     return (

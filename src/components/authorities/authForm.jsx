@@ -1,5 +1,7 @@
 import React, { Component, cloneElement, Fragment } from "react";
 import { Input, Modal } from "antd";
+import axios from "axios";
+import { systemAuthUrl } from "../../httpRequest";
 
 class AuthForm extends Component {
   constructor(props) {
@@ -8,8 +10,8 @@ class AuthForm extends Component {
       visible: false,
       confirmLoading: false,
       input: {
-        codeValue: "",
-        dscrptValue: "",
+        code: "",
+        description: "",
       },
     };
   }
@@ -19,17 +21,65 @@ class AuthForm extends Component {
       visible: true,
     });
   };
+
+  //确定回调
   handleOk = () => {
-    //要发送请求
+    const { code, description } = this.state.input;
+    let self = this;
+    const { id, record } = this.props;
+    if (id === "updateAuth") {
+      axios({
+        method: "put",
+        url: systemAuthUrl + "/" + record.id,
+        data: {
+          code,
+          description,
+        },
+        headers: {
+          Authorization: localStorage.getItem("token"),
+        },
+      })
+        .then(function (response) {
+          //put请求成功后再发请求，确保数据已经更新
+          if (response.status === 200) {
+            console.log(self.props);
+            self.props.refreshAuth();
+            console.log("Authority Updated!");
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } else if (id === "addAuth") {
+      axios({
+        method: "post",
+        url: systemAuthUrl,
+        data: {
+          code,
+          description,
+        },
+        headers: { Authorization: localStorage.getItem("token") },
+      })
+        .then(function (response) {
+          //post请求成功后再发请求，确保数据已经更新
+          if (response.status === 200) {
+            self.props.refreshAuth();
+            console.log("Authority Added!");
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    }
+
     this.setState({
       confirmLoading: true,
     });
-    setTimeout(() => {
-      this.setState({
-        visible: false,
-        confirmLoading: false,
-      });
-    }, 2000);
+
+    this.setState({
+      visible: false,
+      confirmLoading: false,
+    });
   };
   handleCancel = () => {
     this.setState({
@@ -40,10 +90,34 @@ class AuthForm extends Component {
   onChange = ({ target }) => {
     const input = { ...this.state.input };
     target.id === "code"
-      ? (input.codeValue = target.value)
-      : (input.dscrptValue = target.value);
+      ? (input.code = target.value)
+      : (input.description = target.value);
     this.setState({ input });
   };
+
+  renderInput = () => {
+    const { code } = this.state.input;
+    const { id, record } = this.props;
+    return id === "addAuth" ? (
+      <Input
+        placeholder="权限的描述"
+        id="code"
+        value={code}
+        onChange={this.onChange}
+        style={{ marginBottom: 30 }}
+      />
+    ) : (
+      <Input
+        placeholder={record.code}
+        disabled
+        id="code"
+        value={code}
+        onChange={this.onChange}
+        style={{ marginBottom: 30 }}
+      />
+    );
+  };
+
   render() {
     const { visible, confirmLoading, input } = this.state;
     const { title, children } = this.props;
@@ -60,17 +134,11 @@ class AuthForm extends Component {
           cancelText="取消"
           width="400px"
         >
-          <Input
-            placeholder="权限的CODE"
-            id="code"
-            value={input.codeValue}
-            onChange={this.onChange}
-            style={{ marginBottom: 30 }}
-          />
+          {this.renderInput()}
           <Input
             placeholder="权限的描述"
             id="description"
-            value={input.dscrptValue}
+            value={input.description}
             onChange={this.onChange}
           />
         </Modal>

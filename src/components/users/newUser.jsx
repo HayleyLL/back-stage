@@ -28,10 +28,11 @@ const NewUser = () => {
       headers: { Authorization: localStorage.getItem("token") },
     })
       .then(function (response) {
-        if (response.status === 200)
+        if (response.status === 200) {
           //post请求成功后再导航至users页面,确保页面的数据已经更新
           history.replace("/admin/users");
-        console.log("Added!");
+          console.log("Added!");
+        }
       })
       .catch(function (error) {
         console.log(error);

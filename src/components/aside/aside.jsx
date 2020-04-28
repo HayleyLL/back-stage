@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Switch } from "antd";
-import { AppstoreOutlined, SettingOutlined } from "@ant-design/icons";
+import { SettingOutlined } from "@ant-design/icons";
 import "./aside.scss";
 import "antd/dist/antd.css";
 

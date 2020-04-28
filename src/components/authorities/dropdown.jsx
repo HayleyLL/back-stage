@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import { Menu, Dropdown } from "antd";
+import { getPromise } from "./api";
+import { systemConfigsUrl, systemAuthUrl } from "../../httpRequest";
 
 const { SubMenu } = Menu;
 const data = [
@@ -52,7 +54,20 @@ const data = [
 class DropDown extends Component {
   constructor(props) {
     super(props);
-    this.state = { data };
+    this.state = { data: [] };
+  }
+
+  //获取系统权限
+  componentDidMount() {
+    let self = this;
+    getPromise(systemAuthUrl, 1, 1000)
+      .then(function (response) {
+        const data = [...response.data.list];
+        self.setState({ data });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   //根据数据渲染菜单
@@ -79,10 +94,10 @@ class DropDown extends Component {
 
   render() {
     const { children, handleClick } = this.props;
-    const copyData = this.state.data;
+    const copyData = [...this.state.data];
     const menu = (
       <Menu onClick={(e) => handleClick(e, copyData)}>
-        {this.mapToMenu(data)}
+        {this.mapToMenu(copyData)}
       </Menu>
     );
 
