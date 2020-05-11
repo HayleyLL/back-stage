@@ -1,61 +1,11 @@
-import React, { useState } from "react";
-import { Tree } from "antd";
-import PopOver from "./popover";
-
-const treeData = [
-  {
-    title: "0-0",
-    key: "0-0",
-    icon: <PopOver />,
-    children: [
-      {
-        title: "0-0-0",
-        key: "0-0-0",
-        icon: <PopOver />,
-
-        children: [
-          { title: "0-0-0-0", key: "0-0-0-0", icon: <PopOver /> },
-          { title: "0-0-0-1", key: "0-0-0-1", icon: <PopOver /> },
-          { title: "0-0-0-2", key: "0-0-0-2", icon: <PopOver /> },
-        ],
-      },
-      {
-        title: "0-0-1",
-        key: "0-0-1",
-        icon: <PopOver />,
-        children: [
-          { title: "0-0-1-0", key: "0-0-1-0", icon: <PopOver /> },
-          { title: "0-0-1-1", key: "0-0-1-1", icon: <PopOver /> },
-          { title: "0-0-1-2", key: "0-0-1-2", icon: <PopOver /> },
-        ],
-      },
-      {
-        title: "0-0-2",
-        key: "0-0-2",
-        icon: <PopOver />,
-      },
-    ],
-  },
-  {
-    title: "0-1",
-    key: "0-1",
-    icon: <PopOver />,
-    children: [
-      { title: "0-1-0-0", key: "0-1-0-0", icon: <PopOver /> },
-      { title: "0-1-0-1", key: "0-1-0-1", icon: <PopOver /> },
-      { title: "0-1-0-2", key: "0-1-0-2", icon: <PopOver /> },
-    ],
-  },
-  {
-    title: "0-2",
-    key: "0-2",
-    icon: <PopOver />,
-  },
-];
+import React, { useState, useEffect } from "react";
+import { Tree, Button, message } from "antd";
+import { systemConfigsUrl } from "../../httpRequest";
+import { getPromise } from "./api";
 
 const UpdateUserAuthorities = () => {
-  const [expandedKeys, setExpandedKeys] = useState(["0-0-0", "0-0-1"]);
-  const [checkedKeys, setCheckedKeys] = useState(["0-0-0"]);
+  const [expandedKeys, setExpandedKeys] = useState([]);
+  const [checkedKeys, setCheckedKeys] = useState([]);
   const [selectedKeys, setSelectedKeys] = useState([]);
   const [autoExpandParent, setAutoExpandParent] = useState(true);
   const onExpand = (expandedKeys) => {
@@ -75,20 +25,67 @@ const UpdateUserAuthorities = () => {
 
     setSelectedKeys(selectedKeys);
   };
-  const [showIcon] = useState(true);
+
+  const success = () => {
+    message.success("Successfully saved the user's authorities!");
+  };
+
+  const error = () => {
+    message.error("Failed to save the user's authorities!");
+  };
+
+  const enterLoading = (index) => {
+    const newLoadings = [...loadings];
+    newLoadings[index] = true;
+    setLoadings(newLoadings);
+    //点击保存发送用户权限数据
+
+    newLoadings[index] = false;
+    setLoadings(newLoadings);
+    success();
+  };
+
+  const [loadings, setLoadings] = useState([]);
+  const [treeData, setTreeData] = useState([]);
+
+  const getTreeData = () => {
+    getPromise(systemConfigsUrl, 1, 1000)
+      .then(function (response) {
+        const { list } = response.data;
+        const data = list[0].value.tree;
+        setTreeData(data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  useEffect(getTreeData, []);
+
   return (
-    <Tree
-      checkable
-      onExpand={onExpand}
-      expandedKeys={expandedKeys}
-      autoExpandParent={autoExpandParent}
-      onCheck={onCheck}
-      checkedKeys={checkedKeys}
-      onSelect={onSelect}
-      selectedKeys={selectedKeys}
-      treeData={treeData}
-      showIcon={showIcon}
-    />
+    <>
+      <Button
+        type="primary"
+        ghost
+        loading={loadings[0]}
+        onClick={() => enterLoading(0)}
+        style={{ marginBottom: 15 }}
+      >
+        保存
+      </Button>
+
+      <Tree
+        checkable
+        onExpand={onExpand}
+        expandedKeys={expandedKeys}
+        autoExpandParent={autoExpandParent}
+        onCheck={onCheck}
+        checkedKeys={checkedKeys}
+        onSelect={onSelect}
+        selectedKeys={selectedKeys}
+        treeData={treeData}
+      />
+    </>
   );
 };
 

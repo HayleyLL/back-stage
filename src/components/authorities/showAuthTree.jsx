@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Tree } from "antd";
+import { Tree, Button, message } from "antd";
 import { v4 } from "uuid";
 import PopOver from "./popover";
 import { systemConfigsUrl } from "../../httpRequest";
-import { getPromise } from "./api";
+import { getPromise, putConfigPromise } from "./api";
 
 class ShowAuthTree extends Component {
   constructor(props) {
@@ -26,6 +26,7 @@ class ShowAuthTree extends Component {
       ],
       expandedKeys: ["0-0", "0-0-0", "0-0-0-0"],
       popOverKey: "",
+      loadings: [],
     };
   }
 
@@ -275,30 +276,104 @@ class ShowAuthTree extends Component {
     });
   };
 
+  deleteIcon = (data) => {
+    for (let item of data) {
+      delete item.icon;
+      if (item.children) this.deleteIcon(item.children);
+    }
+    return data;
+  };
+
+  addIcon = (data) => {
+    for (let item of data) {
+      item.icon = (
+        <PopOver
+          handleAddClick={this.handleAddClick}
+          handleReplaceClick={this.handleReplaceClick}
+          handleMouseEnter={this.handleMouseEnter}
+          handleDeleteClick={this.handleDeleteClick}
+          id={item.key}
+        />
+      );
+      if (item.children) this.addIcon(item.children);
+    }
+    return data;
+  };
+
+  success = () => {
+    message.success("Successfully saved the tree!");
+  };
+
+  error = () => {
+    message.error("Failed to save the tree!");
+  };
+
   componentDidMount() {
     let self = this;
     getPromise(systemConfigsUrl, 1, 1000)
       .then(function (response) {
         const { list } = response.data;
-        if (list.length > 0) self.setState({ gData: list });
+        const data = list[0].value.tree;
+        self.addIcon(data);
+        if (data.length > 0) self.setState({ gData: [...data] });
       })
       .catch(function (error) {
         console.log(error);
       });
   }
 
+  enterLoading = (index) => {
+    const newLoadings = [...this.state.loadings];
+    newLoadings[index] = true;
+    this.setState({
+      loadings: newLoadings,
+    });
+    //点击保存发送数据
+    const { gData } = this.state;
+    //深复制，避免删除原数据中的icon
+    const deepCopy = JSON.parse(JSON.stringify(gData));
+    this.deleteIcon(deepCopy);
+    let self = this;
+    putConfigPromise(systemConfigsUrl + "/tree", "systemAuthTree", {
+      tree: deepCopy,
+    })
+      .then(function (response) {
+        if (response.status === 200) {
+          newLoadings[index] = false;
+          self.setState({ loadings: newLoadings });
+          self.success();
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+        self.error();
+      });
+  };
+
   render() {
+    const { loadings } = this.state;
     return (
-      <Tree
-        className="draggable-tree"
-        defaultExpandedKeys={this.state.expandedKeys}
-        draggable
-        blockNode
-        onDragEnter={this.onDragEnter}
-        onDrop={this.onDrop}
-        treeData={this.state.gData}
-        showIcon={true}
-      />
+      <React.Fragment>
+        <Button
+          type="primary"
+          ghost
+          loading={loadings[0]}
+          onClick={() => this.enterLoading(0)}
+          style={{ marginBottom: 15 }}
+        >
+          保存
+        </Button>
+        <Tree
+          className="draggable-tree"
+          defaultExpandedKeys={this.state.expandedKeys}
+          draggable
+          blockNode
+          onDragEnter={this.onDragEnter}
+          onDrop={this.onDrop}
+          treeData={this.state.gData}
+          showIcon={true}
+        />
+      </React.Fragment>
     );
   }
 }

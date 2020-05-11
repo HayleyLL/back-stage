@@ -1,55 +1,9 @@
 import React, { Component } from "react";
 import { Menu, Dropdown } from "antd";
 import { getPromise } from "./api";
-import { systemConfigsUrl, systemAuthUrl } from "../../httpRequest";
+import { systemAuthUrl } from "../../httpRequest";
 
 const { SubMenu } = Menu;
-const data = [
-  {
-    id: "1",
-    code: "1st menu item",
-    description: "aaa",
-  },
-  {
-    id: "2",
-    code: "2st menu item",
-    description: "bbb",
-    children: [
-      {
-        id: "2-1",
-        code: "2-1st menu item",
-        description: "b-aaa",
-      },
-      {
-        id: "2-2",
-        code: "2-2st menu item",
-        description: "b-bbb",
-      },
-    ],
-  },
-  {
-    id: "3",
-    code: "3st menu item",
-    description: "ccc",
-  },
-  {
-    id: "4",
-    code: "4st menu item",
-    description: "ddd",
-    children: [
-      {
-        id: "4-1",
-        code: "4-1st menu item",
-        description: "d-aaa",
-      },
-      {
-        id: "4-2",
-        code: "4-2st menu item",
-        description: "d-bbb",
-      },
-    ],
-  },
-];
 
 class DropDown extends Component {
   constructor(props) {
