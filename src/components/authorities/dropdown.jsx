@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Menu, Dropdown } from "antd";
-import { getPromise } from "./api";
-import { systemAuthUrl } from "../../httpRequest";
+import { getPromise } from "../../apis/api";
+import { systemAuthUrl } from "../../apis/httpRequest";
 
 const { SubMenu } = Menu;
 

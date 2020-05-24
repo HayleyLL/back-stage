@@ -9,7 +9,7 @@ import {
   CaretDownOutlined,
 } from "@ant-design/icons";
 import Header from "../common/header/header";
-import { signOutUrl } from "../../httpRequest";
+import { signOutUrl } from "../../apis/httpRequest";
 
 const MainHeader = (props) => {
   const text = <span>admin登录</span>;

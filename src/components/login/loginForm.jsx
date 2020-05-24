@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { Form, Input, Button, Checkbox, Card } from "antd";
 import axios from "axios";
-import { signInUrl } from "../../httpRequest";
+import { signInUrl } from "../../apis/httpRequest";
 
 const layout = {
   wrapperCol: {

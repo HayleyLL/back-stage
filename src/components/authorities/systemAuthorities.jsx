@@ -4,7 +4,7 @@ import axios from "axios";
 import { Table, Button } from "antd";
 import AddAuthority from "./addAuthority";
 import AuthForm from "./authForm";
-import { systemAuthUrl } from "../../httpRequest";
+import { systemAuthUrl } from "../../apis/httpRequest";
 
 class SystemAuthorities extends Component {
   constructor(props) {

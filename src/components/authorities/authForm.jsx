@@ -1,7 +1,7 @@
 import React, { Component, cloneElement, Fragment } from "react";
 import { Input, Modal } from "antd";
 import axios from "axios";
-import { systemAuthUrl } from "../../httpRequest";
+import { systemAuthUrl } from "../../apis/httpRequest";
 
 class AuthForm extends Component {
   constructor(props) {

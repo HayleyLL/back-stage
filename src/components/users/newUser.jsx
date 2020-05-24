@@ -2,7 +2,7 @@ import React from "react";
 import { useHistory } from "react-router-dom";
 import { Form, Input, Button, Checkbox } from "antd";
 import axios from "axios";
-import { usersUrl } from "../../httpRequest";
+import { usersUrl } from "../../apis/httpRequest";
 
 const layout = {
   labelCol: { span: 8 },
