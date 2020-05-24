@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Route, Redirect, Switch } from "react-router-dom";
 import axios from "axios";
 import moment from "moment-timezone";
-import { usersUrl } from "../../httpRequest";
+import { usersUrl } from "../../apis/httpRequest";
 import UsersPage from "../users/users";
 import NewUser from "../users/newUser";
 import UpdateUser from "../users/updateUser";

@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Input, Button } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import axios from "axios";
-import { usersUrl } from "../../../httpRequest";
+import { usersUrl } from "../../../apis/httpRequest";
 import "./search.scss";
 class Search extends Component {
   constructor(props) {

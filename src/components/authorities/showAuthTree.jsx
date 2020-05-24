@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import { Tree, Button, message } from "antd";
 import { v4 } from "uuid";
 import PopOver from "./popover";
-import { systemConfigsUrl } from "../../httpRequest";
-import { getPromise, putConfigPromise } from "./api";
+import { systemConfigsUrl } from "../../apis/httpRequest";
+import { getPromise, putConfigPromise } from "../../apis/api";
 
 class ShowAuthTree extends Component {
   constructor(props) {

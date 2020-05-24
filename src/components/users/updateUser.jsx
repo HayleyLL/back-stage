@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Form, Input, Button, Checkbox } from "antd";
 import axios from "axios";
-import { usersUrl } from "../../httpRequest";
+import { usersUrl } from "../../apis/httpRequest";
 
 const layout = {
   labelCol: { span: 8 },
