@@ -24,7 +24,6 @@ class ShowAuthTree extends Component {
           ),
         },
       ],
-      expandedKeys: ["0-0", "0-0-0", "0-0-0-0"],
       popOverKey: "",
       loadings: [],
     };
@@ -300,14 +299,6 @@ class ShowAuthTree extends Component {
     return data;
   };
 
-  success = () => {
-    message.success("Successfully saved the tree!");
-  };
-
-  error = () => {
-    message.error("Failed to save the tree!");
-  };
-
   componentDidMount() {
     let self = this;
     getPromise(systemConfigsUrl, 1, 1000)
@@ -341,12 +332,14 @@ class ShowAuthTree extends Component {
         if (response.status === 200) {
           newLoadings[index] = false;
           self.setState({ loadings: newLoadings });
-          self.success();
+          message.success("保存成功");
         }
       })
       .catch(function (error) {
-        console.log(error);
-        self.error();
+        if (error.response) message.error(error.response.data.error.message);
+        else message.error(error.message);
+        newLoadings[index] = false;
+        self.setState({ loadings: newLoadings });
       });
   };
 
@@ -365,7 +358,7 @@ class ShowAuthTree extends Component {
         </Button>
         <Tree
           className="draggable-tree"
-          defaultExpandedKeys={this.state.expandedKeys}
+          defaultExpandAll={true}
           draggable
           blockNode
           onDragEnter={this.onDragEnter}
