@@ -28,8 +28,8 @@ class Main extends Component {
         const total = response.data.total;
         const users = data.map((user) => {
           user.key = user.id;
-          user.createdAt = moment(user.createdAt).format("YYYY-MM-DD hh:mm:ss");
-          user.updatedAt = moment(user.updatedAt).format("YYYY-MM-DD hh:mm:ss");
+          user.createdTime = moment(user.createdTime).format("YYYY-MM-DD HH:mm:ss");
+          user.updatedTime = moment(user.updatedTime).format("YYYY-MM-DD HH:mm:ss");
           return user;
         });
         const state = { ...self.state };

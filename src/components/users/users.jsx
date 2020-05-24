@@ -21,12 +21,12 @@ const columns = [
   },
   {
     title: "创建时间",
-    dataIndex: "createdAt",
+    dataIndex: "createdTime",
     key: "address",
   },
   {
     title: "更新时间",
-    dataIndex: "updatedAt",
+    dataIndex: "updatedTime",
     key: "address",
   },
   {
