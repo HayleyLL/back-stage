@@ -1,6 +1,6 @@
 import axios from "axios";
-import { userAuthoritiesUrl } from "./httpRequest";
-import { getPromise } from "./api";
+import {currentUserAuthoritiesUrl, userAuthoritiesUrl} from "./httpRequest";
+import {getPromise, getResponse} from "./api";
 
 export default {
   updateUserAuthorities(userId, authCodes) {
@@ -16,5 +16,9 @@ export default {
   getUserAuthorities(userId) {
     const url = userAuthoritiesUrl.replace(":userId", userId);
     return getPromise(url);
+  },
+
+  getCurrentUserAuthorities() {
+    return getResponse(currentUserAuthoritiesUrl);
   },
 };

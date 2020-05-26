@@ -1,10 +1,11 @@
-import React, { Component } from "react";
-import { Link } from "react-router-dom";
-import { Menu, Switch } from "antd";
-import { TeamOutlined, BankOutlined, UnlockOutlined } from "@ant-design/icons";
+import React, {Component} from "react";
+import {Link} from "react-router-dom";
+import {Menu, Switch} from "antd";
+import {TeamOutlined, BankOutlined, UnlockOutlined} from "@ant-design/icons";
 import "antd/dist/antd.css";
+import {has_auth} from "../../utils/auth";
 
-const { SubMenu } = Menu;
+const {SubMenu} = Menu;
 
 class Aside extends Component {
   state = {
@@ -28,7 +29,7 @@ class Aside extends Component {
     return (
       <div
         className="siderBar"
-        style={{ height: "100%", display: "flex", flexDirection: "column" }}
+        style={{height: "100%", display: "flex", flexDirection: "column"}}
       >
         <Menu
           theme={this.state.theme}
@@ -36,7 +37,7 @@ class Aside extends Component {
           defaultOpenKeys={["sub1"]}
           selectedKeys={[this.state.current]}
           mode="inline"
-          style={{ flex: "1 1 auto" }}
+          style={{flex: "1 1 auto"}}
         >
           <Menu.Item
             key="logo"
@@ -46,15 +47,15 @@ class Aside extends Component {
               backgroundColor: "rgba(255, 255, 255, 0.2)",
             }}
           >
-            <BankOutlined />
+            <BankOutlined/>
             <span>管理中心</span>
           </Menu.Item>
           <Menu.Item key="users">
-            <TeamOutlined />
+            <TeamOutlined/>
             <span>
               <Link
                 to="/admin/users"
-                style={{ color: "rgba(255, 255, 255, 0.65)" }}
+                style={{color: "rgba(255, 255, 255, 0.65)"}}
               >
                 用户列表
               </Link>
@@ -64,17 +65,24 @@ class Aside extends Component {
             key="authorities"
             title={
               <>
-                <UnlockOutlined />
+                <UnlockOutlined/>
                 <span>权限管理</span>
               </>
             }
           >
-            <Menu.Item key="usersAuth">
-              <Link to="/admin/authorities">用户权限管理</Link>
-            </Menu.Item>
-            <Menu.Item key="systemAuth">
-              <Link to="/admin/systemAuthorities">系统权限管理</Link>
-            </Menu.Item>
+            {
+              has_auth('user_auth_management_menu') &&
+              <Menu.Item key="usersAuth">
+                <Link to="/admin/authorities">用户权限管理</Link>
+              </Menu.Item>
+            }
+
+            {
+              has_auth('system_auth_management_menu') &&
+              <Menu.Item key="systemAuth">
+                <Link to="/admin/systemAuthorities">系统权限管理</Link>
+              </Menu.Item>
+            }
           </SubMenu>
         </Menu>
         <Switch
