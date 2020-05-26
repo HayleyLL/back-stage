@@ -6,7 +6,7 @@ import { usersUrl } from "../../apis/httpRequest";
 import UsersPage from "../users/users";
 import NewUser from "../users/newUser";
 import UpdateUser from "../users/updateUser";
-import Authorities from "../authorities/authorities";
+import UserAuthorities from "../authorities/userAuthorities";
 import UpdateUserAuthorities from "../authorities/updateUserAuthorities";
 import SystemAuthorities from "../authorities/systemAuthorities";
 import SystemAuthTree from "../authorities/systemAuthTree";
@@ -21,17 +21,16 @@ class Main extends Component {
       method: "get",
       url: usersUrl,
       params: { pageNum, pageSize },
-      headers: { Authorization: localStorage.getItem("token") },
     })
       .then(function (response) {
         const data = response.data.list;
         const total = response.data.total;
         const users = data.map((user) => {
           user.key = user.id;
-          user.createdAt = moment(user.createdTime).format(
+          user.createdTime = moment(user.createdTime).format(
             "YYYY-MM-DD hh:mm:ss"
           );
-          user.updatedAt = moment(user.updatedTime).format(
+          user.updatedTime = moment(user.updatedTime).format(
             "YYYY-MM-DD hh:mm:ss"
           );
           return user;
@@ -64,7 +63,7 @@ class Main extends Component {
               exact
               path="/admin/authorities"
               render={(props) => (
-                <Authorities requestUsers={this.requestUsers} {...props} />
+                <UserAuthorities requestUsers={this.requestUsers} {...props} />
               )}
             />
             <Route
@@ -82,7 +81,7 @@ class Main extends Component {
               path="/admin/authorities/:id"
               component={UpdateUserAuthorities}
             />
-            <Route exact path="/admin" component={Home} />
+            <Route exact path={["/admin", "/"]} component={Home} />
             <Route path="/not-found" component={NotFound} />
             <Redirect to="/not-found" />
           </Switch>

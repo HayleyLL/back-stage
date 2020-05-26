@@ -25,7 +25,6 @@ const NewUser = () => {
         password,
         name,
       },
-      headers: { Authorization: localStorage.getItem("token") },
     })
       .then(function (response) {
         if (response.status === 200) {

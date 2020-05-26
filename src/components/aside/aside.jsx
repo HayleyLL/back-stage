@@ -1,12 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Switch } from "antd";
-import {
-  TableOutlined,
-  TeamOutlined,
-  BankOutlined,
-  UnlockOutlined,
-} from "@ant-design/icons";
+import { TeamOutlined, BankOutlined, UnlockOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 
 const { SubMenu } = Menu;

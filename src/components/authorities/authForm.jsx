@@ -35,9 +35,6 @@ class AuthForm extends Component {
           code,
           description,
         },
-        headers: {
-          Authorization: localStorage.getItem("token"),
-        },
       })
         .then(function (response) {
           //put请求成功后再发请求，确保数据已经更新
@@ -58,7 +55,6 @@ class AuthForm extends Component {
           code,
           description,
         },
-        headers: { Authorization: localStorage.getItem("token") },
       })
         .then(function (response) {
           //post请求成功后再发请求，确保数据已经更新
