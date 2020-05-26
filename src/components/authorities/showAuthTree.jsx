@@ -164,7 +164,6 @@ class ShowAuthTree extends Component {
     return parents;
   };
 
-  //点击事件
   //点击菜单添加子树节点
   handleAddClick = (e, clickData) => {
     const selectedNode = this.mapToGetNode(e, clickData);
@@ -303,13 +302,12 @@ class ShowAuthTree extends Component {
     let self = this;
     getPromise(systemConfigsUrl, 1, 1000)
       .then(function (response) {
-        const { list } = response.data;
-        const data = list[0].value.tree;
+        const data = response.data.value.tree;
         self.addIcon(data);
         if (data.length > 0) self.setState({ gData: [...data] });
       })
       .catch(function (error) {
-        console.log(error);
+        console.error(error);
       });
   }
 
@@ -325,7 +323,7 @@ class ShowAuthTree extends Component {
     const deepCopy = JSON.parse(JSON.stringify(gData));
     this.deleteIcon(deepCopy);
     let self = this;
-    putConfigPromise(systemConfigsUrl + "/tree", "systemAuthTree", {
+    putConfigPromise(systemConfigsUrl, "systemAuthTree", {
       tree: deepCopy,
     })
       .then(function (response) {
