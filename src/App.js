@@ -1,19 +1,25 @@
 import React from "react";
-import { Switch, Route, Redirect, useHistory } from "react-router-dom";
+import {Redirect, Route, Switch, useHistory} from "react-router-dom";
 import axios from "axios";
 import BackStage from "./backStage";
 import LoginForm from "./components/login/loginForm";
 import NotFound from "./components/common/notFound";
 
 const App = () => {
+  localStorage.setItem("auth_codes", "user_auth_management_menu")
+
   //拦截器
   let history = useHistory();
   axios.interceptors.request.use(
     function (config) {
-      const token = localStorage.getItem("token");
-      config.headers.Authorization = token;
+      config.headers.Authorization = localStorage.getItem("token");
       return config;
     },
+    error => error
+  );
+
+  axios.interceptors.response.use(
+    config => config,
     function (error) {
       if (error.response.status === 401) {
         localStorage.removeItem("token");
@@ -24,19 +30,19 @@ const App = () => {
   );
 
   //根据是否有token渲染页面
-  function PrivateRoute({ children, ...rest }) {
+  function PrivateRoute({children, ...rest}) {
     const token = localStorage.getItem("token");
     return (
       <Route
         {...rest}
-        render={({ location }) =>
+        render={({location}) =>
           token ? (
             children
           ) : (
             <Redirect
               to={{
                 pathname: "/admin/login",
-                state: { from: location },
+                state: {from: location},
               }}
             />
           )
@@ -47,13 +53,13 @@ const App = () => {
 
   return (
     <Switch>
-      <Route path="/admin/login" component={LoginForm} />
+      <Route path="/admin/login" component={LoginForm}/>
       <PrivateRoute path={["/admin", "/"]}>
-        <BackStage />
+        <BackStage/>
       </PrivateRoute>
-      <Redirect from="/" to="/admin/login" />
-      <Route path="/not-found" component={NotFound} />
-      <Redirect to="/not-found" />
+      <Redirect from="/" to="/admin/login"/>
+      <Route path="/not-found" component={NotFound}/>
+      <Redirect to="/not-found"/>
     </Switch>
   );
 };

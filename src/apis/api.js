@@ -1,5 +1,18 @@
 import axios from "axios";
 
+export const getResponse = (url, pageNum, pageSize) => {
+  return axios({
+    method: "get",
+    url,
+    params: {
+      pageNum,
+      pageSize,
+    },
+  }).then(response => {
+    return response.data;
+  });
+};
+
 export const getPromise = (url, pageNum, pageSize) => {
   return axios({
     method: "get",

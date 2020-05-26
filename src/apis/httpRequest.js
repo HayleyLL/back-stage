@@ -5,3 +5,4 @@ export const signOutUrl = `${baseUrl}/sign_out`;
 export const systemAuthUrl = `${baseUrl}/authorities`;
 export const systemConfigsUrl = `${baseUrl}/configs/systemAuthTree`;
 export const userAuthoritiesUrl = `${baseUrl}/users/:userId/authorities`;
+export const currentUserAuthoritiesUrl = `${baseUrl}/user/authorities`;

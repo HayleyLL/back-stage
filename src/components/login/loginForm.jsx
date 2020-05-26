@@ -1,8 +1,9 @@
 import React from "react";
-import { useHistory, useLocation } from "react-router-dom";
-import { Form, Input, Button, Checkbox, Card } from "antd";
+import {useHistory, useLocation} from "react-router-dom";
+import {Form, Input, Button, Checkbox, Card} from "antd";
 import axios from "axios";
-import { signInUrl } from "../../apis/httpRequest";
+import {signInUrl} from "../../apis/httpRequest";
+import userAuthorityApi from "../../apis/userAuthorityApi";
 
 const layout = {
   wrapperCol: {
@@ -30,30 +31,36 @@ const LoginForm = () => {
         password,
       },
     })
-      .then(function (response) {
-        let { from } = location.state || { from: { pathname: "/admin" } };
+      .then(async function (response) {
+        let {from} = location.state || {from: {pathname: "/admin"}};
 
         if (response.status === 200) {
           //获取验证token
           const token = response.data.token;
           localStorage.setItem("token", token);
+
+          const authorities = await userAuthorityApi.getCurrentUserAuthorities();
+          const auth_codes = authorities.map(auth => auth.code);
+          console.log(auth_codes)
+          localStorage.setItem("auth_codes", auth_codes.join(","));
+
           history.replace(from);
         }
       })
       //处理错误
       .catch(function (error) {
         if (error.response) {
-          console.log(error.response);
+          console.error(error.response);
           alert(error.response.data.error.message);
         } else {
-          console.log("Error", error.message);
+          console.error("Error", error.message);
         }
-        console.log(error.config);
+        console.error(error.config);
       });
   };
 
   //提交表单回调
-  const onFinish = ({ username, password }) => {
+  const onFinish = ({username, password}) => {
     login(username, password);
   };
 
