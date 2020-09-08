@@ -21,7 +21,8 @@ const columns = [
     key: "actions",
     render: (text, record) => (
       <span style={{ verticalAlign: "middle" }}>
-        <a
+        <Link
+          to={"/admin/checkUserAuth/" + record.id}
           style={{
             paddingRight: 8,
             marginRight: 8,
@@ -37,8 +38,8 @@ const columns = [
           >
             查看权限
           </span>
-        </a>
-        <Link to={"/admin/authorities/" + record.id}>
+        </Link>
+        <Link to={"/admin/updateUserAuth/" + record.id}>
           <span
             style={{ fontSize: 14, lineHeight: "14px", verticalAlign: "top" }}
           >

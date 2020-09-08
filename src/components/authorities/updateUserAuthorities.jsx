@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { Button, message, Tree } from "antd";
 import { filterNodes, filterNodesByKeys } from "../../utils/tree";
 import { userAuthorityApi, configApi } from "../../apis/";
-import SystemAuthTree from "./systemAuthTree";
 
 const UpdateUserAuthorities = (props) => {
   const [expandedKeys, setExpandedKeys] = useState([]);
@@ -26,7 +25,6 @@ const UpdateUserAuthorities = (props) => {
   const changeLoadings = (bool, index) => {
     const newLoadings = [...loadings];
     newLoadings[index] = bool;
-    console.log(newLoadings, index);
     setLoadings(newLoadings);
   };
 
@@ -61,6 +59,7 @@ const UpdateUserAuthorities = (props) => {
   function initAuthTree(systemAuthTree) {
     const data = systemAuthTree.data.value.tree;
     setTreeData(data);
+
     const keys = filterNodes(data).map((node) => node.key);
     setExpandedKeys(keys);
     return data;

@@ -1,12 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import { Menu, Switch } from "antd";
-import {
-  TableOutlined,
-  TeamOutlined,
-  BankOutlined,
-  UnlockOutlined,
-} from "@ant-design/icons";
+import { TeamOutlined, BankOutlined, UnlockOutlined } from "@ant-design/icons";
 import "antd/dist/antd.css";
 
 const { SubMenu } = Menu;
@@ -15,11 +10,13 @@ class Aside extends Component {
   state = {
     theme: "dark",
     current: "1",
+    color: "rgba(255, 255, 255, 0.65)",
   };
 
   changeTheme = (value) => {
     this.setState({
       theme: value ? "dark" : "light",
+      color: value ? "rgba(255, 255, 255, 0.65)" : "rgba(0, 0, 0, 0.65)",
     });
   };
 
@@ -38,7 +35,7 @@ class Aside extends Component {
         <Menu
           theme={this.state.theme}
           onClick={this.handleClick}
-          defaultOpenKeys={["sub1"]}
+          defaultOpenKeys={["authorities"]}
           selectedKeys={[this.state.current]}
           mode="inline"
           style={{ flex: "1 1 auto" }}
@@ -57,10 +54,7 @@ class Aside extends Component {
           <Menu.Item key="users">
             <TeamOutlined />
             <span>
-              <Link
-                to="/admin/users"
-                style={{ color: "rgba(255, 255, 255, 0.65)" }}
-              >
+              <Link to="/admin/users" style={{ color: this.state.color }}>
                 用户列表
               </Link>
             </span>
@@ -75,7 +69,7 @@ class Aside extends Component {
             }
           >
             <Menu.Item key="usersAuth">
-              <Link to="/admin/authorities">用户权限管理</Link>
+              <Link to="/admin/userAuth">用户权限管理</Link>
             </Menu.Item>
             <Menu.Item key="systemAuth">
               <Link to="/admin/systemAuthorities">系统权限管理</Link>

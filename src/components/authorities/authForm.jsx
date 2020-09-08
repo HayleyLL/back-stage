@@ -100,7 +100,7 @@ class AuthForm extends Component {
     const { id, record } = this.props;
     return id === "addAuth" ? (
       <Input
-        placeholder="权限的描述"
+        placeholder="权限的CODE"
         id="code"
         value={code}
         onChange={this.onChange}

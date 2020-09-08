@@ -108,7 +108,7 @@ const MainHeader = (props) => {
         />
         <Route
           exact
-          path="/admin/authorities"
+          path="/admin/userAuth"
           render={(props) => (
             <Header
               href="/admin/users"
@@ -136,7 +136,7 @@ const MainHeader = (props) => {
           path="/admin/systemAuthorities"
           render={(props) => (
             <Header
-              href="/admin/authorities"
+              href="/admin/userAuth"
               previousItem="用户权限管理"
               currentItem="系统权限管理"
               {...props}
@@ -145,10 +145,22 @@ const MainHeader = (props) => {
         />
         <Route
           exact
-          path="/admin/authorities/:id"
+          path="/admin/checkUserAuth/:id"
           render={(props) => (
             <Header
-              href="/admin/authorities"
+              href="/admin/userAuth"
+              previousItem="权限管理"
+              currentItem="查看用户权限"
+              {...props}
+            />
+          )}
+        />
+        <Route
+          exact
+          path="/admin/updateUserAuth/:id"
+          render={(props) => (
+            <Header
+              href="/admin/userAuth"
               previousItem="权限管理"
               currentItem="更新用户权限"
               {...props}

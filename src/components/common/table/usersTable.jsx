@@ -49,7 +49,7 @@ class UsersTable extends Component {
         data={this.state.users}
         pagination={pagination}
       />
-    );
+    )
   }
 }
 

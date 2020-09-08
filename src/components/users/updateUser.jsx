@@ -119,7 +119,6 @@ class UpdateUser extends Component {
           </Form.Item>
 
           <Form.Item {...tailLayout} name="remember" valuePropName="checked">
-            <Checkbox>记住我</Checkbox>
           </Form.Item>
           <Form.Item {...tailLayout}>
             <Button type="primary" htmlType="submit">

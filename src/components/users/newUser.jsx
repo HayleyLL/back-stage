@@ -54,9 +54,9 @@ const NewUser = () => {
         {...layout}
         name="basic"
         initialValues={{
-          username: "请输入...",
+          username: "",
           password: "",
-          email: "请输入...",
+          email: "",
         }}
         onFinish={onFinish}
         onFinishFailed={onFinishFailed}

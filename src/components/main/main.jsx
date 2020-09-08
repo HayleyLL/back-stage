@@ -8,6 +8,7 @@ import NewUser from "../users/newUser";
 import UpdateUser from "../users/updateUser";
 import Authorities from "../authorities/authorities";
 import UpdateUserAuthorities from "../authorities/updateUserAuthorities";
+import checkUserAuthoroties from "../authorities/checkUserAuthorities";
 import SystemAuthorities from "../authorities/systemAuthorities";
 import SystemAuthTree from "../authorities/systemAuthTree";
 import NotFound from "../common/notFound";
@@ -21,23 +22,24 @@ class Main extends Component {
       method: "get",
       url: usersUrl,
       params: { pageNum, pageSize },
-      headers: { Authorization: localStorage.getItem("token") },
+      headers: { Authorization: localStorage.getItem("token") }
     })
       .then(function (response) {
         const data = response.data.list;
         const total = response.data.total;
-        const users = data.map((user) => {
+        // debugger
+        data.forEach((user) => {
           user.key = user.id;
-          user.createdAt = moment(user.createdTime).format(
+          user.createdTime = moment(user.createdTime).format(
             "YYYY-MM-DD hh:mm:ss"
           );
-          user.updatedAt = moment(user.updatedTime).format(
-            "YYYY-MM-DD hh:mm:ss"
+          user.updatedTime = 
+          moment(user.updatedTime).format(
+           "YYYY-MM-DD hh:mm:ss"
           );
-          return user;
         });
         const state = { ...self.state };
-        state.users = users;
+        state.users = data;
         state.pagination.total = total;
         self.setState(state);
       })
@@ -62,7 +64,7 @@ class Main extends Component {
             <Route exact path="/admin/users/:id" component={UpdateUser} />
             <Route
               exact
-              path="/admin/authorities"
+              path="/admin/userAuth"
               render={(props) => (
                 <Authorities requestUsers={this.requestUsers} {...props} />
               )}
@@ -79,7 +81,12 @@ class Main extends Component {
             />
             <Route
               exact
-              path="/admin/authorities/:id"
+              path="/admin/checkUserAuth/:id"
+              component={checkUserAuthoroties}
+            />
+            <Route
+              exact
+              path="/admin/updateUserAuth/:id"
               component={UpdateUserAuthorities}
             />
             <Route exact path="/admin" component={Home} />
