@@ -29,17 +29,10 @@ const MainHeader = (props) => {
     axios({
       method: "post",
       url: signOutUrl,
-      headers: { Authorization: localStorage.getItem("token") },
-    })
-      .then(function () {
-        localStorage.removeItem("token");
-        history.push("/");
-      })
-      .catch(function (error) {
-        if (error.response.status === 401) {
-          localStorage.removeItem("token");
-        }
-      });
+    }).then(function () {
+      localStorage.removeItem("token");
+      history.push("/");
+    });
   };
 
   const { state, toggle } = props;

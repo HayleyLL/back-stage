@@ -4,15 +4,15 @@ import UsersTable from "../common/table/usersTable";
 
 const columns = [
   {
-    title: "姓名",
-    dataIndex: "name",
-    key: "name",
-    width: 250,
-  },
-  {
     title: "Id",
     dataIndex: "id",
     key: "id",
+    width: 250,
+  },
+  {
+    title: "姓名",
+    dataIndex: "name",
+    key: "name",
     width: 250,
   },
   {
@@ -51,7 +51,7 @@ const columns = [
   },
 ];
 
-const Authorities = (props) => {
+const UserAuthorities = (props) => {
   const { requestUsers } = props;
   const pageSize = 6;
   return (
@@ -63,4 +63,4 @@ const Authorities = (props) => {
   );
 };
 
-export default Authorities;
+export default UserAuthorities;

@@ -24,9 +24,6 @@ class UpdateUser extends Component {
     axios({
       method: "get",
       url: usersUrl + "/" + this.props.match.params.id,
-      headers: {
-        Authorization: localStorage.getItem("token"),
-      },
     })
       .then(function (response) {
         const user = {
@@ -54,7 +51,6 @@ class UpdateUser extends Component {
         password,
         name,
       },
-      headers: { Authorization: localStorage.getItem("token") },
     })
       .then(function (response) {
         //请求成功后导航至users页面并刷新

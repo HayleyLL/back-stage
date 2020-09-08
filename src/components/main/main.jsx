@@ -6,7 +6,7 @@ import { usersUrl } from "../../apis/httpRequest";
 import UsersPage from "../users/users";
 import NewUser from "../users/newUser";
 import UpdateUser from "../users/updateUser";
-import Authorities from "../authorities/authorities";
+import UserAuthorities from "../authorities/userAuthorities";
 import UpdateUserAuthorities from "../authorities/updateUserAuthorities";
 import checkUserAuthoroties from "../authorities/checkUserAuthorities";
 import SystemAuthorities from "../authorities/systemAuthorities";
@@ -33,9 +33,9 @@ class Main extends Component {
           user.createdTime = moment(user.createdTime).format(
             "YYYY-MM-DD hh:mm:ss"
           );
-          user.updatedTime = 
-          moment(user.updatedTime).format(
-           "YYYY-MM-DD hh:mm:ss"
+
+          user.updatedTime = moment(user.updatedTime).format(
+            "YYYY-MM-DD hh:mm:ss"
           );
         });
         const state = { ...self.state };
@@ -66,7 +66,7 @@ class Main extends Component {
               exact
               path="/admin/userAuth"
               render={(props) => (
-                <Authorities requestUsers={this.requestUsers} {...props} />
+                <UserAuthorities requestUsers={this.requestUsers} {...props} />
               )}
             />
             <Route
@@ -89,7 +89,7 @@ class Main extends Component {
               path="/admin/updateUserAuth/:id"
               component={UpdateUserAuthorities}
             />
-            <Route exact path="/admin" component={Home} />
+            <Route exact path={["/admin", "/"]} component={Home} />
             <Route path="/not-found" component={NotFound} />
             <Redirect to="/not-found" />
           </Switch>

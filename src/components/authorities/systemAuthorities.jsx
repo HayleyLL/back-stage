@@ -31,7 +31,6 @@ class SystemAuthorities extends Component {
         pageNum,
         pageSize,
       },
-      headers: { Authorization: localStorage.getItem("token") },
     })
       .then(function (response) {
         const total = response.data.total;
